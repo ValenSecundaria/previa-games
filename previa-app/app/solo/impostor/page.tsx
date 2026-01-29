@@ -314,15 +314,8 @@ export default function ImpostorGame() {
                         <div className="text-5xl mb-4">🤫</div>
                         <h2 className="text-3xl font-extrabold text-white mb-2">¡Ronda Terminada!</h2>
                         <p className="text-gray-400 text-sm">
-                            {(impostorIndices.length > 1 ? 'Los impostores eran:' : 'El impostor era:')}
+                            ¿Quién es el impostor?
                         </p>
-                        <div className="mt-2 flex flex-wrap justify-center gap-2">
-                            {impostorIndices.map(idx => (
-                                <span key={idx} className="bg-red-500/20 text-red-100 px-3 py-1 rounded-lg font-bold border border-red-500/50">
-                                    {players[idx]}
-                                </span>
-                            ))}
-                        </div>
                     </div>
 
                     <div className="w-full space-y-3">
