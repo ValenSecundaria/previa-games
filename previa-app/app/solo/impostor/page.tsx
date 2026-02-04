@@ -9,15 +9,86 @@ import MagicCard from '@/components/solo/impostor/MagicCard';
 
 // --- MOCK DICTIONARY ---
 const MOCK_WORDS: { [key: string]: string[] } = {
-    'General': ['Pizza', 'Fútbol', 'Playa', 'Hospital', 'Escuela', 'Gimnasio', 'Cine', 'Supermercado'],
-    'Comida': ['Hamburguesa', 'Sushi', 'Tacos', 'Milanesa', 'Helado', 'Ensalada', 'Asado', 'Pasta'],
-    'Lugares': ['París', 'Nueva York', 'Japón', 'Brasil', 'Egipto', 'Roma', 'Londres', 'China'],
-    'Animales': ['León', 'Elefante', 'Perro', 'Gato', 'Águila', 'Tiburón', 'Delfín', 'Gorila'],
-    'Famosos': ['Messi', 'Shakira', 'Brad Pitt', 'Taylor Swift', 'The Rock', 'Rihanna', 'Cristiano', 'Beyoncé'],
-    'Objetos': ['Silla', 'Teléfono', 'Computadora', 'Reloj', 'Lámpara', 'Mesa', 'Cama', 'Espejo'],
-    'Películas': ['Titanic', 'Avatar', 'Star Wars', 'Harry Potter', 'Matrix', 'Joker', 'Avengers', 'Frozen'],
-    'Marcas': ['Nike', 'Adidas', 'Apple', 'Samsung', 'Coca-Cola', 'McDonalds', 'Tesla', 'Netflix']
+    'Selecciones': [
+        'Argentina', 'Brasil', 'Alemania', 'Francia', 'Italia', 'España', 'Inglaterra', 'Uruguay',
+        'Portugal', 'Países Bajos', 'Croacia', 'México', 'Estados Unidos', 'Japón',
+        'Senegal', 'Nigeria', 'Camerún', 'Chile', 'Colombia', 'Perú',
+        'Costa Rica', 'Suiza', 'Suecia', 'Dinamarca', 'Australia', 'Canadá'
+    ],
+    'Jugadores Famosos de Fútbol': [
+        'Messi', 'Maradona', 'Pelé', 'Cristiano Ronaldo', 'Ronaldo (Brasil)', 'Ronaldinho', 'Zidane',
+        'Neymar', 'Mbappé', 'Di María', 'Iniesta', 'Xavi', 'Beckham', 'Pirlo', 'Buffon', 'Casillas',
+        'Modric', 'Suárez', 'Cavani', 'Batistuta', 'Riquelme', 'Tevez', 'Agüero', 'Benzema',
+        'Lewandowski', 'Salah', 'Haaland', 'Griezmann', 'Van Dijk', 'De Bruyne', 'Julián Álvarez',
+        'Enzo Fernández', "Burrito Ortega"
+    ],
+    'Jugadores Históricos NBA': [
+        'Michael Jordan', 'Kobe Bryant', 'LeBron James', 'Magic Johnson', 'Larry Bird',
+        'Shaquille O\'Neal', 'Tim Duncan', 'Stephen Curry', 'Kevin Durant', 'Allen Iverson',
+        'Dennis Rodman', 'Scottie Pippen', 'Kareem Abdul-Jabbar', 'Wilt Chamberlain', 'Bill Russell',
+        'Giannis Antetokounmpo', 'Luka Dončić', 'James Harden', 'Russell Westbrook', 'Chris Paul',
+        'Kawhi Leonard', 'Dirk Nowitzki', 'Manu Ginóbili', 'Tony Parker', 'Pau Gasol', 'Nikola Jokic',
+        'Derrick Rose', 'Tracy McGrady', 'Vince Carter', 'Paul Pierce', 'Ray Allen'
+    ],
+    'Películas': [
+        'Titanic', 'Rocky', 'Terminator', 'El Padrino', 'Jurassic Park',
+        'Volver al Futuro', 'Matrix', 'Avatar', 'El Rey León', 'Toy Story',
+        'Star Wars', 'Harry Potter', 'El Señor de los Anillos', 'Rápido y Furioso', 'Spider-Man',
+        'Batman', 'Joker', 'Avengers', 'Buscando a Nemo', 'Soy leyenda',
+        'Shrek', 'Up', 'Interestelar', 'Avengers', 'Piratas del Caribe', 'Kung Fu Panda',
+        'Madagascar', 'Transformers'
+    ],
+    'Marcas': [
+        'Coca-Cola', 'Pepsi', 'Nike', 'Adidas', 'Puma', 'Samsung', 'Apple', 'Motorola', 'LG', 'Sony',
+        'PlayStation', 'Xbox', 'Google', 'YouTube', 'Instagram', 'WhatsApp', 'Mercado Libre', 'Netflix',
+        'McDonald\'s', 'Burger King', 'Starbucks', 'Quilmes', 'YPF', 'Arcor', 'La Serenísima',
+        'Ferrari', 'Sprite', 'Visa', 'Mastercard', 'Toyota', 'Ford', 'Chevrolet'
+    ],
+    'Series': [
+        'Los Simpson', 'Breaking Bad', 'La Casa de Papel', 'Friends', 'Game of Thrones',
+        'The Walking Dead', 'Stranger Things', 'The Big Bang Theory', 'Vikings', 'Dark',
+        'Prison Break', 'Better Call Saul', 'Peaky Blinders', 'Dexter',
+        'Grey\'s Anatomy', 'House', 'Black Mirror', 'Narcos', 'El Chavo del 8',
+        'Casados con Hijos', 'Futurama', 'Rick and Morty', 'Dragon Ball', 'Dragon Ball Z',
+        'One Piece', 'Pokémon', 'SpongeBob', 'South Park', 'The Office'
+    ],
+    'Acciones': [
+        'Correr', 'Saltar', 'Caminar', 'Sentarse', 'Pararse', 'Dormir', 'Comer', 'Beber', 'Agarrar',
+        'Soltar', 'Abrir', 'Cerrar', 'Mirar', 'Escuchar', 'Hablar', 'Gritar', 'Reír', 'Llorar',
+        'Empujar', 'Tirar', 'Levantar', 'Bajar', 'Subir', 'Esconder', 'Buscar', 'Esperar',
+        'Entrar', 'Salir', 'Cargar', 'Apoyar', 'Girar', 'Frenar'
+    ],
+    'Bandas / Cantantes': [
+        'Soda Stereo', 'Charly García', 'Fito Páez', 'Spinetta', 'Los Redondos', 'Babasónicos',
+        'Los Auténticos Decadentes', 'Callejeros', 'La Renga', 'Divididos', 'Tan Biónica', 'Miranda',
+        'Abel Pintos', 'Andrés Calamaro', 'Shakira', 'Michael Jackson', 'Madonna',
+        'Queen', 'The Beatles', 'Rolling Stones', 'Coldplay', 'Eminem', 'Daddy Yankee',
+        'Bad Bunny', 'Karol G', 'Taylor Swift', 'Ed Sheeran', 'Bruno Mars', 'Luis Miguel',
+        'Ricky Martin'
+    ],
+    'Lugares': [
+        'Playa', 'Hospital', 'Escuela', 'Casa', 'Patio', 'Cocina', 'Baño', 'Dormitorio', 'Living',
+        'Balcón', 'Plaza', 'Parque', 'Calle', 'Vereda', 'Ruta', 'Supermercado', 'Kiosco', 'Farmacia',
+        'Panadería', 'Restaurante', 'Bar', 'Estadio', 'Cancha', 'Club', 'Cine', 'Teatro', 'Shopping',
+        'Banco', 'Oficina', 'Fábrica', 'Terminal', 'Aeropuerto'
+    ],
+    'Equipos de futbol': [
+        'Real Madrid', 'Barcelona', 'Manchester United', 'Liverpool', 'Chelsea',
+        'Manchester City', 'Arsenal', 'Bayern Múnich', 'Borussia Dortmund', 'Juventus',
+        'AC Milan', 'Inter de Milán', 'Paris Saint-Germain', 'Ajax', 'Porto',
+        'Benfica', 'Atlético de Madrid', 'Sevilla', 'Roma', 'Napoli',
+        'Flamengo', 'Palmeiras', 'Boca Juniors', 'River Plate', 'Corinthians',
+        'Santos', 'São Paulo', 'Peñarol', 'Nacional', 'Colo-Colo',
+        'América (México)', 'Chivas', 'Cruz Azul', 'LA Galaxy', 'Al Hilal'
+    ],
+    'Test': ['uno', 'dos']
 };
+
+// Generate 'General' category with all words from all other categories (excluding 'Test')
+MOCK_WORDS['General'] = Object.keys(MOCK_WORDS)
+    .filter(key => key !== 'Test') // Exclude test category
+    .flatMap(key => MOCK_WORDS[key]);
+
 
 type GameState = 'SETUP' | 'PLAYING' | 'FINISHED';
 
@@ -42,6 +113,8 @@ export default function ImpostorGame() {
     const [currentStep, setCurrentStep] = useState(0);
     const [impostorIndices, setImpostorIndices] = useState<number[]>([]);
     const [secretWord, setSecretWord] = useState('');
+    const [lastUsedWord, setLastUsedWord] = useState<string>(''); // Track last word to avoid repetition
+    const [isCardRevealed, setIsCardRevealed] = useState(false); // Track if card is being pressed
 
     // --- INITIALIZATION ---
     useEffect(() => {
@@ -58,6 +131,7 @@ export default function ImpostorGame() {
                 setImpostorIndices(data.impostorIndices || []);
                 setSecretWord(data.secretWord || '');
                 setTargetImpostorCount(data.targetImpostorCount || 1);
+                setLastUsedWord(data.lastUsedWord || '');
             } catch (e) {
                 console.error("Failed to load state", e);
             }
@@ -72,18 +146,27 @@ export default function ImpostorGame() {
             gameState,
             turnOrder,
             currentStep,
-
             impostorIndices,
             secretWord,
-            targetImpostorCount
+            targetImpostorCount,
+            lastUsedWord
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
-    }, [players, theme, gameState, turnOrder, currentStep, impostorIndices, secretWord, targetImpostorCount]);
+    }, [players, theme, gameState, turnOrder, currentStep, impostorIndices, secretWord, targetImpostorCount, lastUsedWord]);
 
 
     // --- HELPERS ---
     const getRandomWord = (selectedTheme: string) => {
         const list = MOCK_WORDS[selectedTheme] || MOCK_WORDS['General'];
+
+        // If there's a last used word and the list has more than one word, avoid it
+        if (lastUsedWord && list.length > 1) {
+            const availableWords = list.filter(word => word !== lastUsedWord);
+            if (availableWords.length > 0) {
+                return availableWords[Math.floor(Math.random() * availableWords.length)];
+            }
+        }
+
         return list[Math.floor(Math.random() * list.length)];
     };
 
@@ -115,9 +198,11 @@ export default function ImpostorGame() {
         setTurnOrder(newOrder);
         setImpostorIndices(newImpostors);
         setSecretWord(newWord);
+        setLastUsedWord(newWord); // Save the word to avoid repetition
         setTheme(selectedTheme);
         setCurrentTheme(selectedTheme);
         setCurrentStep(0);
+        setIsCardRevealed(false); // Reset card reveal state
         setGameState('PLAYING');
     };
 
@@ -144,6 +229,7 @@ export default function ImpostorGame() {
     const handleNextPlayer = () => {
         if (currentStep < players.length - 1) {
             setCurrentStep(currentStep + 1);
+            setIsCardRevealed(false); // Reset for next player
         } else {
             setGameState('FINISHED');
         }
@@ -293,6 +379,8 @@ export default function ImpostorGame() {
                         isImpostor={isImpostor}
                         word={secretWord}
                         onNext={handleNextPlayer}
+                        isCardRevealed={isCardRevealed}
+                        setIsCardRevealed={setIsCardRevealed}
                     />
 
                     {/* Safe Progress Indicator */}

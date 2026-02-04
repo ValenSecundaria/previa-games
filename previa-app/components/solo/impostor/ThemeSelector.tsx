@@ -9,13 +9,17 @@ interface ThemeSelectorProps {
 
 const THEMES = [
     'General',
-    'Comida',
-    'Lugares',
-    'Animales',
-    'Famosos',
-    'Objetos',
+    'Selecciones',
+    'Jugadores Famosos de Fútbol',
+    'Jugadores Históricos NBA',
     'Películas',
-    'Marcas'
+    'Marcas',
+    'Series',
+    'Acciones',
+    'Bandas / Cantantes',
+    'Lugares',
+    'Equipos de futbol',
+    'Test'
 ];
 
 export default function ThemeSelector({ isOpen, onClose, onSelect, currentTheme }: ThemeSelectorProps) {
@@ -41,8 +45,8 @@ export default function ThemeSelector({ isOpen, onClose, onSelect, currentTheme 
                                 onClose();
                             }}
                             className={`w-full text-left p-3 rounded-xl transition-all ${currentTheme === theme
-                                    ? 'bg-violet-600 text-white font-bold shadow-[0_0_15px_rgba(139,92,246,0.3)]'
-                                    : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                                ? 'bg-violet-600 text-white font-bold shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                                : 'bg-white/5 text-gray-300 hover:bg-white/10'
                                 }`}
                         >
                             {theme}

@@ -6,9 +6,11 @@ interface MagicCardProps {
     isImpostor: boolean;
     word: string;
     onNext: () => void;
+    isCardRevealed: boolean;
+    setIsCardRevealed: (revealed: boolean) => void;
 }
 
-export default function MagicCard({ player, isImpostor, word, onNext }: MagicCardProps) {
+export default function MagicCard({ player, isImpostor, word, onNext, isCardRevealed, setIsCardRevealed }: MagicCardProps) {
     return (
         <div className="w-full max-w-sm mx-auto glass-card flex flex-col items-center gap-6 animate-fade-in">
             <div className="text-center">
@@ -17,12 +19,18 @@ export default function MagicCard({ player, isImpostor, word, onNext }: MagicCar
             </div>
 
             <div className="w-full">
-                <MagicButton isImpostor={isImpostor} word={word} />
+                <MagicButton
+                    isImpostor={isImpostor}
+                    word={word}
+                    isRevealed={isCardRevealed}
+                    setIsRevealed={setIsCardRevealed}
+                />
             </div>
 
             <button
                 onClick={onNext}
-                className="btn btn-violet w-full shadow-lg"
+                disabled={isCardRevealed}
+                className={`btn btn-violet w-full shadow-lg transition-all ${isCardRevealed ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
                 Siguiente
             </button>

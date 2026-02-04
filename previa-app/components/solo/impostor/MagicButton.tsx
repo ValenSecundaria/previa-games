@@ -1,58 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 interface MagicButtonProps {
     isImpostor: boolean;
     word: string;
+    isRevealed: boolean;
+    setIsRevealed: (revealed: boolean) => void;
 }
 
-export default function MagicButton({ isImpostor, word }: MagicButtonProps) {
-    const [revealed, setRevealed] = useState(false);
-    const [showContent, setShowContent] = useState(false);
-
+export default function MagicButton({ isImpostor, word, isRevealed, setIsRevealed }: MagicButtonProps) {
     // Reset state when word or role changes (new round/player)
     useEffect(() => {
-        setRevealed(false);
-        setShowContent(false);
-    }, [word, isImpostor]);
-
-    const handlePress = () => {
-        setRevealed(true);
-        // Small delay for animation if desired, or instant
-        setShowContent(true);
-    };
-
-    const handleRelease = () => {
-        // Optional: If we want it to hide when releasing, but usually for this game 
-        // it stays revealed until "Next" is clicked in the parent. 
-        // For "Hold to reveal" mechanics, we'd use onTouchStart/End.
-        // The requirement says "Click to show", usually toggles or holds.
-        // Let's implement a toggle for simplicity unless "Hold" is strictly requested.
-        // User said: "Al presionarlo te muestra la palabra". "Presionarlo" could mean hold.
-        // Let's stick to Toggle for accessibility and ease, or Hold if requested specifically?
-        // "Al presionarlo te muestra" often implies "While pressed". 
-        // Let's do a "Touch/Click to reveal, release to hide" for safety? 
-        // Or a toggle. Let's do a simple TOGGLE based on context "MagicButton".
-        // Actually, "Safety" means if I show it, I don't want the next person to see it accidentally.
-        // Let's make it: Press and HOLD to see. Release to hide. 
-        // Wait, requirements: "al presionarlo te muestra la palabra o te muestra 'Impostor'".
-        // Let's implement PRESS AND HOLD interaction for better secrecy.
-    };
+        setIsRevealed(false);
+    }, [word, isImpostor, setIsRevealed]);
 
     return (
         <button
             className={`w-full h-40 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all duration-300 flex items-center justify-center text-2xl font-bold select-none
-                ${revealed
+                ${isRevealed
                     ? (isImpostor ? 'bg-red-500/20 border-2 border-red-500 text-red-100' : 'bg-green-500/20 border-2 border-green-500 text-green-100')
                     : 'bg-gradient-to-br from-violet-600 to-fuchsia-600 border-2 border-white/20 text-white hover:scale-[1.02] active:scale-95'
                 }`}
-            onMouseDown={() => setRevealed(true)}
-            onMouseUp={() => setRevealed(false)}
-            onMouseLeave={() => setRevealed(false)}
-            onTouchStart={() => setRevealed(true)}
-            onTouchEnd={() => setRevealed(false)}
+            onMouseDown={() => setIsRevealed(true)}
+            onMouseUp={() => setIsRevealed(false)}
+            onMouseLeave={() => setIsRevealed(false)}
+            onTouchStart={() => setIsRevealed(true)}
+            onTouchEnd={() => setIsRevealed(false)}
             type="button"
         >
-            {revealed ? (
+            {isRevealed ? (
                 <span className="animate-fade-in">
                     {isImpostor ? 'IMPOSTOR' : word}
                 </span>
