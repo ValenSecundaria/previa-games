@@ -15,8 +15,18 @@ export default function CarreraCaballos() {
     const [showCardPopup, setShowCardPopup] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [horsePositions, setHorsePositions] = useState([0, 0, 0, 0]);
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [currentFrame, setCurrentFrame] = useState(0); // 0 = running, 1 = jumping
     const totalColumns = 10;
     const horses = ['🐴', '🐎', '🏇', '🦄'];
+
+    // Colores para cada caballo según el palo
+    const horseColors = [
+        'invert(50%) sepia(100%) saturate(500%) hue-rotate(160deg) brightness(1.2)', // Celeste - Espada
+        'invert(40%) sepia(100%) saturate(400%) hue-rotate(340deg) brightness(1.1)', // Rojo suave - Copa
+        'invert(45%) sepia(100%) saturate(600%) hue-rotate(80deg) brightness(0.85)', // Verde oscuro - Basto
+        'invert(70%) sepia(100%) saturate(500%) hue-rotate(20deg) brightness(1.2)'   // Amarillo-oro - Oro
+    ];
 
     // Función para robar una carta
     const drawCard = () => {
@@ -41,7 +51,29 @@ export default function CarreraCaballos() {
 
             // Mover la carta que acabamos de sacar al descarte
             setDiscardPile(prev => [drawnCard, ...prev]);
+
+            // Esperar 1 segundo después de que la carta llega al descarte, luego animar caballos
+            setTimeout(() => {
+                animateHorses();
+            }, 1000);
         }, 1500);
+    };
+
+    // Función para animar el movimiento con 2 frames
+    const animateHorses = () => {
+        setIsAnimating(true);
+
+        // Frame 1: jumping
+        setCurrentFrame(1);
+
+        setTimeout(() => {
+            // Frame 2: running y mover a la siguiente posición
+            setCurrentFrame(0);
+            setHorsePositions(prev =>
+                prev.map(pos => Math.min(pos + 1, totalColumns - 1))
+            );
+            setIsAnimating(false);
+        }, 300); // 300ms para el salto
     };
 
     return (
@@ -138,8 +170,13 @@ export default function CarreraCaballos() {
                                         >
                                             {/* Indicador de posición */}
                                             {colIndex === horsePositions[rowIndex] && (
-                                                <div className="w-full h-full flex items-center justify-center text-2xl">
-                                                    {horse}
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    <img
+                                                        src={currentFrame === 0 ? '/horse-running.png' : '/horse-jumping.png'}
+                                                        alt="caballo"
+                                                        className="h-10 w-auto object-contain"
+                                                        style={{ filter: horseColors[rowIndex] }}
+                                                    />
                                                 </div>
                                             )}
                                         </div>
