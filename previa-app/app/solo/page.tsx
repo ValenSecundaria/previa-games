@@ -6,8 +6,8 @@ import PrimaryButton from '@/components/PrimaryButton';
 import PaginationControls from '@/components/solo/PaginationControls';
 
 const items = [
-    'Impostor', 'Juego 2', 'Juego 3', 'Juego 4',
-    'Juego 5', 'Juego 6', 'Juego 7', 'Juego 8'
+    'Impostor', 'Verdad o Reto', 'Carrera caballos', 'Juego 3',
+    'Juego 4', 'Juego 5', 'Juego 6', 'Juego 7', 'Juego 8'
 ];
 
 export default function Solo() {
@@ -36,7 +36,11 @@ export default function Solo() {
                 {displayedItems.map((label) => (
                     label === 'Impostor'
                         ? <PrimaryButton key={label} href="/solo/impostor">{label}</PrimaryButton>
-                        : <button key={label} className="btn btn-violet w-full shadow-lg opacity-50 cursor-not-allowed" disabled>{label}</button>
+                        : label === 'Verdad o Reto'
+                            ? <PrimaryButton key={label} href="/solo/verdad-o-reto">{label}</PrimaryButton>
+                            : label === 'Carrera caballos'
+                                ? <PrimaryButton key={label} href="/solo/carrera-caballos">{label}</PrimaryButton>
+                                : <button key={label} className="btn btn-violet w-full shadow-lg opacity-50 cursor-not-allowed" disabled>{label}</button>
                 ))}
             </div>
 
