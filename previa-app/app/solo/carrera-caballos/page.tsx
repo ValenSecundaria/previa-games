@@ -16,7 +16,8 @@ export default function CarreraCaballos() {
     const [isExiting, setIsExiting] = useState(false);
     const [horsePositions, setHorsePositions] = useState([0, 0, 0, 0]);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [currentFrame, setCurrentFrame] = useState(0); // 0 = running, 1 = jumping
+    const [horseFrames, setHorseFrames] = useState([0, 0, 0, 0]); // 0 = running, 1 = jumping para cada caballo
+    const [winner, setWinner] = useState<number | null>(null); // Índice del caballo ganador
     const totalColumns = 10;
     const horses = ['🐴', '🐎', '🏇', '🦄'];
 
@@ -54,26 +55,55 @@ export default function CarreraCaballos() {
 
             // Esperar 1 segundo después de que la carta llega al descarte, luego animar caballos
             setTimeout(() => {
-                animateHorses();
+                animateHorses(drawnCard.suit);
             }, 1000);
         }, 1500);
     };
 
     // Función para animar el movimiento con 2 frames
-    const animateHorses = () => {
+    const animateHorses = (suit: string) => {
         setIsAnimating(true);
 
-        // Frame 1: jumping
-        setCurrentFrame(1);
+        // Mapear palo a índice de caballo
+        const suitToHorseIndex: { [key: string]: number } = {
+            'espadas': 0,  // Celeste
+            'copas': 1,    // Rojo suave
+            'bastos': 2,   // Verde
+            'oros': 3      // Amarillo-oro
+        };
+
+        const horseIndex = suitToHorseIndex[suit];
+
+        // Frame 1: jumping - solo para el caballo correspondiente
+        setHorseFrames(prev => prev.map((frame, idx) => idx === horseIndex ? 1 : frame));
 
         setTimeout(() => {
-            // Frame 2: running y mover a la siguiente posición
-            setCurrentFrame(0);
-            setHorsePositions(prev =>
-                prev.map(pos => Math.min(pos + 1, totalColumns - 1))
+            // Frame 2: running y mover solo el caballo correspondiente
+            setHorseFrames(prev => prev.map((frame, idx) => idx === horseIndex ? 0 : frame));
+
+            const newPositions = horsePositions.map((pos, idx) =>
+                idx === horseIndex ? Math.min(pos + 1, totalColumns - 1) : pos
             );
+
+            setHorsePositions(newPositions);
+
+            // Verificar si el caballo llegó a la meta
+            if (newPositions[horseIndex] >= totalColumns - 1) {
+                setWinner(horseIndex);
+            }
+
             setIsAnimating(false);
         }, 300); // 300ms para el salto
+    };
+
+    // Función para reiniciar el juego
+    const restartGame = () => {
+        setHorsePositions([0, 0, 0, 0]);
+        setHorseFrames([0, 0, 0, 0]);
+        setWinner(null);
+        setDeck(shuffleDeck(generateFullDeck()));
+        setDiscardPile([]);
+        setCurrentCard(null);
     };
 
     return (
@@ -123,6 +153,58 @@ export default function CarreraCaballos() {
                     </div>
                 )}
 
+                {/* Popup de Victoria */}
+                {winner !== null && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 max-w-md w-full mx-4 border-2 border-purple-500/50 shadow-2xl">
+                            {/* Caballo ganador */}
+                            <div className="flex flex-col items-center mb-6">
+                                <div className="mb-4">
+                                    <img
+                                        src='/horse-running.png'
+                                        alt="caballo ganador"
+                                        className="h-32 w-auto object-contain"
+                                        style={{ filter: horseColors[winner!] }}
+                                    />
+                                </div>
+
+                                <h2 className="text-4xl font-bold mb-2 text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                                    ¡Victoria!
+                                </h2>
+
+                                <p className="text-xl text-white/90 text-center">
+                                    El caballo <span className="font-bold">
+                                        {winner === 0 && 'Espada'}
+                                        {winner === 1 && 'Copa'}
+                                        {winner === 2 && 'Basto'}
+                                        {winner === 3 && 'Oro'}
+                                    </span> ha ganado la carrera
+                                </p>
+                            </div>
+
+                            {/* Botones */}
+                            <div className="flex gap-4 mt-8">
+                                <button
+                                    onClick={restartGame}
+                                    className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                                    </svg>
+                                    Reiniciar
+                                </button>
+
+                                <Link
+                                    href="/solo"
+                                    className="flex-1 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center"
+                                >
+                                    Volver al menú
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Mazos de cartas */}
                 <div className="mb-8 flex gap-4 items-center">
                     {/* Carta jugada (Descarte) - Solo se muestra si hay cartas jugadas */}
@@ -153,26 +235,18 @@ export default function CarreraCaballos() {
                     <div className="space-y-3">
                         {horses.map((horse, rowIndex) => (
                             <div key={rowIndex} className="flex items-center gap-1">
-                                {/* Caballo */}
-                                <div className="w-12 text-3xl flex items-center justify-center">
-                                    {horse}
-                                </div>
-
                                 {/* Pista de carreras */}
                                 <div className="flex-1 flex gap-1">
                                     {Array.from({ length: totalColumns }).map((_, colIndex) => (
                                         <div
                                             key={colIndex}
-                                            className={`flex-1 h-12 rounded-lg border-2 transition-all ${colIndex === horsePositions[rowIndex]
-                                                ? 'bg-gradient-to-br from-purple-500/30 to-pink-500/30 border-purple-400/50'
-                                                : 'bg-gray-800/30 border-gray-700/50'
-                                                }`}
+                                            className="flex-1 h-12 rounded-lg border-2 bg-gray-800/30 border-gray-700/50"
                                         >
                                             {/* Indicador de posición */}
                                             {colIndex === horsePositions[rowIndex] && (
                                                 <div className="w-full h-full flex items-center justify-center">
                                                     <img
-                                                        src={currentFrame === 0 ? '/horse-running.png' : '/horse-jumping.png'}
+                                                        src={horseFrames[rowIndex] === 0 ? '/horse-running.png' : '/horse-jumping.png'}
                                                         alt="caballo"
                                                         className="h-10 w-auto object-contain"
                                                         style={{ filter: horseColors[rowIndex] }}
@@ -193,7 +267,7 @@ export default function CarreraCaballos() {
                 </div>
 
                 {/* Botón de volver */}
-                <div className="mt-8">
+                <div className="mt-12">
                     <Link href="/solo" className="text-gray-400 hover:text-white transition-colors text-sm">
                         ← Volver a juegos
                     </Link>
