@@ -18,6 +18,7 @@ export default function CarreraCaballos() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [horseFrames, setHorseFrames] = useState([0, 0, 0, 0]); // 0 = running, 1 = jumping para cada caballo
     const [winner, setWinner] = useState<number | null>(null); // Índice del caballo ganador
+    const [isProcessing, setIsProcessing] = useState(false); // Bloquear inputs durante toda la secuencia
     const totalColumns = 10;
     const horses = ['🐴', '🐎', '🏇', '🦄'];
 
@@ -32,6 +33,9 @@ export default function CarreraCaballos() {
     // Función para robar una carta
     const drawCard = () => {
         if (deck.length === 0) return; // No hay más cartas
+        if (isProcessing) return; // No permitir robar carta si hay procesamiento en curso
+
+        setIsProcessing(true); // Bloquear nuevas cartas
 
         const [drawnCard, ...remainingDeck] = deck;
         setDeck(remainingDeck);
@@ -93,6 +97,7 @@ export default function CarreraCaballos() {
             }
 
             setIsAnimating(false);
+            setIsProcessing(false); // Permitir sacar nueva carta
         }, 300); // 300ms para el salto
     };
 
@@ -104,6 +109,8 @@ export default function CarreraCaballos() {
         setDeck(shuffleDeck(generateFullDeck()));
         setDiscardPile([]);
         setCurrentCard(null);
+        setIsProcessing(false);
+        setIsAnimating(false);
     };
 
     return (
